@@ -1,0 +1,1 @@
+CRYPTO_PRICE_CACHE_EXPIRY = 1.minute
