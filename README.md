@@ -324,7 +324,7 @@ touch config/master.key
 ```
 ---
 
-## 3. Start the Rails Server
+## 4. Start the Rails Server
 
 ```bash
 bin/rails server
@@ -338,7 +338,7 @@ http://localhost:3000
 
 ---
 
-## 4. Start the Solid Queue Worker
+## 5. Start the Solid Queue Worker
 
 Open a second terminal and run:
 
@@ -350,7 +350,7 @@ This process executes background jobs asynchronously.
 
 ---
 
-## 5. Enqueue a Job
+## 6. Enqueue a Job
 
 From another terminal:
 
@@ -364,7 +364,7 @@ FetchCryptoPriceJob.perform_later("bitcoin")
 
 ---
 
-## 6. Test the API
+## 7. Test the API
 
 ```http
 GET /prices/bitcoin

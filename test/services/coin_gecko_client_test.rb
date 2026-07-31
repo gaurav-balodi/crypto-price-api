@@ -23,12 +23,12 @@ class CoinGeckoClientTest < ActiveSupport::TestCase
     captured_request = nil
 
     CoinGeckoClient.stub(:perform_request, lambda { |uri|
-      request = Net::HTTP::Get.new(uri)
+      request = ::Net::HTTP::Get.new(uri)
       request["User-Agent"] = CoinGeckoClient::USER_AGENT
       request[CoinGeckoClient::API_KEY_HEADER] = Rails.application.credentials.coingecko_api_key
       captured_request = request
 
-      fake_response = Net::HTTPOK.new("1.1", "200", "OK")
+      fake_response = ::Net::HTTPOK.new("1.1", "200", "OK")
       fake_response.instance_variable_set(:@body, '{"bitcoin":{"usd":63786.0}}')
       fake_response.instance_variable_set(:@read, true)
       fake_response
@@ -96,7 +96,7 @@ class CoinGeckoClientTest < ActiveSupport::TestCase
   end
 
   test "raises error for unexpected HTTP status" do
-    fake_response = Net::HTTPInternalServerError.new("1.1", "500", "Internal Server Error")
+    fake_response = ::Net::HTTPInternalServerError.new("1.1", "500", "Internal Server Error")
 
     CoinGeckoClient.stub(:perform_request, fake_response) do
       error = assert_raises(CoinGeckoClient::Error) do
