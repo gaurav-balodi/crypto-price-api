@@ -1,4 +1,5 @@
 require "test_helper"
+require "net/http"
 
 class CoinGeckoClientTest < ActiveSupport::TestCase
   test "raises error for blank symbol" do
@@ -40,7 +41,7 @@ class CoinGeckoClientTest < ActiveSupport::TestCase
   end
 
   test "raises custom error when request times out" do
-    CoinGeckoClient.stub(:perform_request, proc { raise Net::ReadTimeout }) do
+    CoinGeckoClient.stub(:perform_request, proc { raise ::Net::ReadTimeout }) do
       assert_raises(CoinGeckoClient::Error) do
         CoinGeckoClient.fetch_price("bitcoin")
       end
@@ -48,7 +49,7 @@ class CoinGeckoClientTest < ActiveSupport::TestCase
   end
 
   test "returns price on successful response" do
-    fake_response = Net::HTTPOK.new("1.1", "200", "OK")
+    fake_response = ::Net::HTTPOK.new("1.1", "200", "OK")
     fake_response.instance_variable_set(:@body, '{"bitcoin":{"usd":63786.0}}')
     fake_response.instance_variable_set(:@read, true)
 
@@ -58,7 +59,7 @@ class CoinGeckoClientTest < ActiveSupport::TestCase
   end
 
   test "raises error when unauthorized due to invalid API key" do
-    fake_response = Net::HTTPUnauthorized.new("1.1", "401", "Unauthorized")
+    fake_response = ::Net::HTTPUnauthorized.new("1.1", "401", "Unauthorized")
 
     CoinGeckoClient.stub(:perform_request, fake_response) do
       error = assert_raises(CoinGeckoClient::Error) do
@@ -70,7 +71,7 @@ class CoinGeckoClientTest < ActiveSupport::TestCase
   end
 
   test "raises error when rate limited" do
-    fake_response = Net::HTTPTooManyRequests.new("1.1", "429", "Too Many Requests")
+    fake_response = ::Net::HTTPTooManyRequests.new("1.1", "429", "Too Many Requests")
 
     CoinGeckoClient.stub(:perform_request, fake_response) do
       error = assert_raises(CoinGeckoClient::Error) do
@@ -82,7 +83,7 @@ class CoinGeckoClientTest < ActiveSupport::TestCase
   end
 
   test "raises error when price not found for symbol" do
-    fake_response = Net::HTTPOK.new("1.1", "200", "OK")
+    fake_response = ::Net::HTTPOK.new("1.1", "200", "OK")
     fake_response.instance_variable_set(:@body, "{}")
     fake_response.instance_variable_set(:@read, true)
 

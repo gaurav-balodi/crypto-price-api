@@ -1,4 +1,14 @@
 class ApplicationController < ActionController::API
+
+  def route_not_found
+    render json: {
+      success: false,
+      error: {
+        message: "The requested endpoint does not exist.",
+      }
+    }, status: :not_found
+  end
+
   private
 
   def render_success(data, status: :ok)

@@ -8,7 +8,7 @@ class PricesController < ApplicationController
       )
     else
       render_error(
-      	"Price not found",
+        "No price found for '#{params[:symbol]}'",
       	status: :not_found,
       )
     end

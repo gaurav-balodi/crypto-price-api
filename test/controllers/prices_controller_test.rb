@@ -22,14 +22,15 @@ class PricesControllerTest < ActionDispatch::IntegrationTest
 
   test "returns not found when price does not exist" do
     PriceLookupService.stub(:call, nil) do
-      get "/prices/unknown"
+      symbol = "unknown"
+      get "/prices/#{symbol}"
 
       assert_response :not_found
 
       body = JSON.parse(response.body)
 
       assert_not body["success"]
-      assert_equal "Price not found", body["error"]["message"]
+      assert_equal "No price found for '#{symbol}'", body["error"]["message"]
     end
   end
 

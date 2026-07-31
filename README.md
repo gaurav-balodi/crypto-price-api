@@ -376,6 +376,41 @@ Example:
 curl http://localhost:3000/prices/bitcoin
 ```
 
+### Success Response
+
+**Status:** `200 OK`
+
+```json
+{
+  "success": true,
+  "data": {
+    "symbol": "bitcoin",
+    "price": 109234.52,
+    "fetched_at": "2026-07-31T12:30:45Z"
+  }
+}
+```
+
+---
+
+### Cryptocurrency Not Found
+
+```bash
+curl http://localhost:3000/prices/bitcoin-xd
+```
+
+If no cached price exists for the requested symbol:
+
+**Status:** `404 Not Found`
+
+```json
+{
+  "success": false,
+  "error": {
+    "message": "No price found for 'bitcoin-xd'."
+  }
+}
+```
 ---
 
 ## 7. Run the Test Suite
